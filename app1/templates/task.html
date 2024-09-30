@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task</title>
+    <link rel="stylesheet" href="{% static 'task.css' %}">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="{% static 'task.js' %}"></script>
+</head>
+<body>
+    <div class="flex-container">
+        <div class="first">
+            <div class="nav">
+                <div class="content">
+                    <div class="content1">
+                        <h3>TASK</h3>
+                    </div>
+                    <div class="content2">
+                        <i class="material-icons">notifications</i>
+                        <i class="material-icons per" id="user-icon">person</i>
+                        <div class="dropdown-content" id="dropdown-content">
+                            <div class="dropdown-header">
+                                <img src="https://th.bing.com/th/id/OIP.BnDyiy74oiHwP-3YdQ2oTgAAAA?w=127&h=128&c=7&r=0&o=5&pid=1.7" alt="User" class="user-img">
+                                <h4>Superuser</h4>
+                            </div>
+                            <button id="logout-button">Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="second">
+            <div class="sidenav">
+                <div class="ta">
+                    <img src="https://th.bing.com/th/id/OIP.Gs1XKyh7h6Inf-bB4UpnmwAAAA?w=128&h=128&c=7&r=0&o=5&pid=1.7" alt="">
+                    <h3>ORWELL</h3>
+                </div>
+                <div class="tab">
+                    <a href="{% url 'dashboard' %}"><i class="material-icons per"> dashboard</i>Dashboard</a>
+                    <a href="{% url 'employee' %}"><i class="material-icons per">badge</i> Employee</a>
+                    <a href="{% url 'product' %}"><i class="material-icons per">category</i> Products</a>
+                    <a href="{% url 'task' %}" class="active"><i class="material-icons per">task</i> Tasks</a>
+                    <a href="{% url 'accounts' %}"><i class="material-icons per">currency_exchange</i> Accounts</a>
+                    <a href="{% url 'jobs' %}"><i class="material-icons per">work</i> Jobs</a>
+                </div>
+            </div>
+            <div class="container">
+                <div class="nav1">
+                    <h3>Task Management</h3>
+                    <div class="tab1">
+                        <button class="tablinks active" onclick="opentab(event,'producttab')">Products</button>
+                        <button class="tablinks" onclick="opentab(event,'emptab')">Employee</button>
+                    </div>
+                </div>
+                <div class="tabcontent" id="producttab">
+                    <div class="table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Product</th>
+                                <th>Task</th>
+                                <th>Assigned</th>
+                                <th>Deadline</th>
+                                <th>Completion</th>
+                                <th>Superior</th>
+                                <th>Employees</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-task-list"></tbody>
+                    </table>
+                    </div>
+                </div>
+
+                <div id="emptab" class="tabcontent" style="display: none;">
+                    <div class="table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Employee
+                                    <select id="empcat">
+                                        <option value="">all</option>
+                                    </select>
+                                </th>
+                                <th>Product</th>
+                                <th>Task</th>
+                                <th>Assigned</th>
+                                <th>Deadline</th>
+                                <th>Completion</th>
+                                <th>Superior</th>
+                            </tr>
+                        </thead>
+                        <tbody id="emp-task-list"></tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded",function(){
+            document.getElementById('logout-button').addEventListener('click',function(event){
+                event.preventDefault();
+                fetch("{% url 'logout' %}",{
+                    method:'POST',
+                    headers:{
+                        'X-CSRFToken':'{{csrf_token}}'
+                    }
+                })
+                .then(response =>{
+                    if(response.ok){
+                        window.location.href="{% url 'login1' %}";
+                    } else {
+                        console.error('Failed to logout');
+                    }
+                })
+                .catch(error =>{
+                    console.error('error','Error!')
+                });
+            });
+        });
+    </script>
+</body>
+</html>

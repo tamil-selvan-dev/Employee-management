@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jobs</title>
+    <link rel="stylesheet" href="{% static 'jobs.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="{% static 'jobs2.js' defer %}"></script>
+</head>
+<body>
+    <div class="flex-container">
+        <div class="first">
+            <div class="nav">
+                <div class="content">
+                    <div class="content1">
+                        <h3>JOBS</h3>
+                    </div>
+                    <div class="content2">
+                        <i class="material-icons">notifications</i>
+                        <i class="material-icons per" id="user-icon">person</i>
+                        <div class="dropdown-content" id="dropdown-content">
+                            <div class="dropdown-header">
+                                <img src="https://th.bing.com/th/id/OIP.BnDyiy74oiHwP-3YdQ2oTgAAAA?w=127&h=128&c=7&r=0&o=5&pid=1.7" alt="User" class="user-img">
+                                <h4>Superuser</h4>
+                            </div>
+                            <button id="logout-button">Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="second">
+            <div class="sidenav">
+                <div class="ta">
+                    <img src="https://th.bing.com/th/id/OIP.Gs1XKyh7h6Inf-bB4UpnmwAAAA?w=128&h=128&c=7&r=0&o=5&pid=1.7" alt="">
+                    <h3>ORWELL</h3>
+                </div>
+                <div class="tab">
+                    <a href="{% url 'dashboard' %}"><i class="material-icons per"> dashboard</i>Dashboard</a>
+                    <a href="{% url 'employee' %}"><i class="material-icons per">badge</i> Employee</a>
+                    <a href="{% url 'product' %}"><i class="material-icons per">category</i> Products</a>
+                    <a href="{% url 'task' %}"><i class="material-icons per">task</i> Tasks</a>
+                    <a href="{% url 'accounts' %}"><i class="material-icons per">currency_exchange</i> Accounts</a>
+                    <a href="{% url 'jobs' %}"  class="active"><i class="material-icons per">work</i> Jobs</a>
+                </div>
+            </div>
+            <div class="container">
+                <div class="container1">
+                    <div class="container11">
+                        <h3>Total Employees</h3>
+                        <div class="con1">
+                            <i class="material-icons per">calculate</i>
+                            <h4>Total Count of Employees:</h4>
+                            <p id="tot-emp"></p>                    
+                        </div>
+                    </div>
+                    <div class="container12">
+                        <h3>Required Employees</h3>
+                        <div class="con2"></div>
+                    </div>
+                </div>
+                <div class="container2">
+                    <div class="container21">
+                        <h3>Employees Count</h3>
+                        <div class="con3"></div>
+                    </div>
+                    <div class="container22">
+                        <h3>Employees Positions Chart</h3>
+                        <div class="con4">
+                        <canvas id="positionchart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded",function(){
+            document.getElementById('logout-button').addEventListener('click',function(event){
+                event.preventDefault();
+                fetch("{% url 'logout' %}",{
+                    method:'POST',
+                    headers:{
+                        'X-CSRFToken':'{{csrf_token}}'
+                    }
+                })
+                .then(response =>{
+                    if(response.ok){
+                        window.location.href="{% url 'login1' %}";
+                    } else {
+                        console.error('Failed to logout');
+                    }
+                })
+                .catch(error =>{
+                    console.error('error','Error!')
+                });
+            });
+        });
+    </script>    
+</body>
+</html>

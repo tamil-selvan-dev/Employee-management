@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'adminlea.css' %}">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript">
+        const csrftoken="{{ csrf_token }}"
+    </script>
+    <script src="{% static 'adminlea.js' %}"></script>
+    <title>Leave</title>
+</head>
+<body>
+    <div class="flex-container"></div>
+        <div class="first">
+            <div class="nav">
+                <div class="content">
+                    <div class="content1">
+                        <h3>LEAVES</h3>
+                    </div>
+                    <div class="content2">
+                        <i class="material-icons">notifications</i>
+                        <i class="material-icons per" id="user-icon">person</i>
+                        <div class="dropdown-content" id="dropdown-content">
+                            <div class="dropdown-header">
+                                <img src="https://th.bing.com/th/id/OIP.BnDyiy74oiHwP-3YdQ2oTgAAAA?w=127&h=128&c=7&r=0&o=5&pid=1.7" alt="User" class="user-img">
+                                <h4>ADMIN</h4>
+                            </div>
+                            <button id="logout-button">Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="second">
+            <div class="sidenav">
+                <div class="ta">
+                    <img src="https://th.bing.com/th/id/OIP.Gs1XKyh7h6Inf-bB4UpnmwAAAA?w=128&h=128&c=7&r=0&o=5&pid=1.7" alt="">
+                    <h3>ORWELL</h3>
+                </div>
+                <div class="tab">
+                    <a href="{% url 'emp' %}"><i class="material-icons per">badge</i> Employee</a>
+                    <a href="{% url 'pro1' %}"><i class="material-icons per">category</i> Products</a>
+                    <a href="{% url 'task3' %}"><i class="material-icons per">task</i> Tasks</a>
+                    <a href="{% url 'jobs1' %}"><i class="material-icons per">work</i> Jobs</a>
+                    <a href="{% url 'leave2' %}" class="active"><i class="material-icons per">person</i>Leaves</a>
+                </div>
+            </div>
+            <div class="container">
+                <div class="container1">
+                    <h2>Employee Leave Approval</h2>
+                    <div class="table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Employee-Id</th>
+                                    <th>Employee</th>
+                                    <th>Leave</th>
+                                    <th>Date</th>
+                                    <th>Permission</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body"></tbody>
+                        </table>
+                    </div>
+                    <div id="pagination" class="pagination"></div>
+                </div>
+                <div id="model" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2>APPLY LEAVE</h2>
+                        <form id="modalform">
+                            <input type="hidden" id="itemid" name="id">
+                            <input type="hidden" id="tableid" name="table">
+                            <label for="emp_id">Employee:</label>
+                            <input type="text" id="emp_id" name="emp_id" readonly><br>
+                            <label for="leave1">Leave:</label>
+                            <input type="text" id="leave1" name="leave1" readonly><br>
+                            <label for="date1">Date:</label>
+                            <input type="text" id="date1" name="date1" readonly><br>
+                            <label for="date1">Permission:</label>
+                            <select name="Permission" id="Permission"></select><br>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded",function(){
+            document.getElementById('logout-button').addEventListener('click',function(event){
+                event.preventDefault();
+                fetch("{% url 'logout' %}",{
+                    method:'POST',
+                    headers:{
+                        'X-CSRFToken':'{{csrf_token}}'
+                    }
+                })
+                .then(response =>{
+                    if(response.ok){
+                        window.location.href="{% url 'login1' %}";
+                    } else {
+                        console.error('Failed to logout');
+                    }
+                })
+                .catch(error =>{
+                    console.error('error','Error!')
+                });
+            });
+        });
+    </script>
+     <script>
+        const loggedInUserId = "{{ request.session.id }}";
+    </script>
+</body>
+</html>

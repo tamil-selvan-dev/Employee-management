@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'user1.css' %}">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript">
+        const csrftoken="{{ csrf_token }}"
+    </script>
+    <script src="{% static 'user.js' %}"></script>
+    <title>Employee</title>
+</head>
+<body>
+    <div class="flex-container"></div>
+        <div class="first">
+            <div class="nav">
+                <div class="content">
+                    <div class="content1">
+                        <h3>EMPLOYEE</h3>
+                    </div>
+                    <div class="content2">
+                        <i class="material-icons">notifications</i>
+                        <i class="material-icons per" id="user-icon">person</i>
+                        <div class="dropdown-content" id="dropdown-content">
+                            <div class="dropdown-header">
+                                <img src="https://th.bing.com/th/id/OIP.BnDyiy74oiHwP-3YdQ2oTgAAAA?w=127&h=128&c=7&r=0&o=5&pid=1.7" alt="User" class="user-img">
+                                <h4>{{request.session.name}}</h4>
+                            </div>
+                            <button id="logout-button">Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="second">
+            <div class="sidenav">
+                <div class="ta">
+                    <img src="https://th.bing.com/th/id/OIP.Gs1XKyh7h6Inf-bB4UpnmwAAAA?w=128&h=128&c=7&r=0&o=5&pid=1.7" alt="">
+                    <h3>ORWELL</h3>
+                </div>
+                <div class="tab">
+                    <a href="{% url 'user2' %}" class="active"><i class="material-icons per">task</i> Tasks</a>
+                    <a href="{% url 'leave' %}"><i class="material-icons per">person</i> Leaves</a>
+                </div>
+            </div>
+            <div class="container">
+                <div class="container1">
+                    <h2>Task Management</h2>
+                    <div class="table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Employee</th>
+                                    <th>Product</th>
+                                    <th>Task</th>
+                                    <th>Assigned</th>
+                                    <th>Deadline</th>
+                                    <th>Completion</th>
+                                    <th>Superior</th>
+                                </tr>
+                            </thead>
+                            <tbody id="emp-task-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded",function(){
+            document.getElementById('logout-button').addEventListener('click',function(event){
+                event.preventDefault();
+                fetch("{% url 'logout' %}",{
+                    method:'POST',
+                    headers:{
+                        'X-CSRFToken':'{{csrf_token}}'
+                    }
+                })
+                .then(response =>{
+                    if(response.ok){
+                        window.location.href="{% url 'login1' %}";
+                    } else {
+                        console.error('Failed to logout');
+                    }
+                })
+                .catch(error =>{
+                    console.error('error','Error!')
+                });
+            });
+        });
+    </script>
+     <script>
+        const loggedInUserId = "{{ request.session.id }}";
+    </script>
+</body>
+</html>

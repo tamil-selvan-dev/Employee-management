@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'tas2.css' %}">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript">
+        const csrftoken="{{ csrf_token }}"
+    </script>
+    <script src="{% static 'tas1.js' %}"></script>
+    <title>Tasks</title>
+</head>
+<body>
+    <div class="flex-container"></div>
+        <div class="first">
+            <div class="nav">
+                <div class="content">
+                    <div class="content1">
+                        <h3>TASK</h3>
+                    </div>
+                    <div class="content2">
+                        <i class="material-icons">notifications</i>
+                        <i class="material-icons per" id="user-icon">person</i>
+                        <div class="dropdown-content" id="dropdown-content">
+                            <div class="dropdown-header">
+                                <img src="https://th.bing.com/th/id/OIP.BnDyiy74oiHwP-3YdQ2oTgAAAA?w=127&h=128&c=7&r=0&o=5&pid=1.7" alt="User" class="user-img">
+                                <h4>ADMIN</h4>
+                            </div>
+                            <button id="logout-button">Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="second">
+            <div class="sidenav">
+                <div class="ta">
+                    <img src="https://th.bing.com/th/id/OIP.Gs1XKyh7h6Inf-bB4UpnmwAAAA?w=128&h=128&c=7&r=0&o=5&pid=1.7" alt="">
+                    <h3>ORWELL</h3>
+                </div>
+                <div class="tab">
+                    <a href="{% url 'emp' %}"><i class="material-icons per">badge</i> Employee</a>
+                    <a href="{% url 'pro1' %}"><i class="material-icons per">category</i> Products</a>
+                    <a href="{% url 'task3' %}"  class="active"><i class="material-icons per">task</i> Tasks</a>
+                    <a href="{% url 'jobs1' %}"><i class="material-icons per">work</i> Jobs</a>
+                    <a href="{% url 'leave2' %}"><i class="material-icons per">person</i>Leaves</a>
+                </div>
+            </div>
+            <div class="container">
+                <div class="container1">
+                    <h2>Tasks Details</h2>
+                    <button id="add">Add</button>
+                    <div class="table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Product_Id</th>
+                                    <th>Task</th>
+                                    <th>Employee_Id</th>
+                                    <th>Assigned</th>
+                                    <th>Deadine</th>
+                                    <th>Completion</th>
+                                    <th>Superior</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body"></tbody>
+                        </table>
+                    </div>
+                    <div id="pagination" class="pagination"></div>
+                </div>
+            </div>
+            <div id="model" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>ADD/EDIT ITEMS</h2>
+                    <form id="modalform">
+                        <input type="hidden" id="itemid" name="id">
+                        <input type="hidden" id="tableid" name="table">
+                        <label for="pro_id">Product_id:</label>
+                        <select id="pro_id" name="pro_id" required></select><br>
+                        <label for="task">Task:</label>
+                        <input type="text" id="task" name="task" required><br>
+                        <label for="emp_id">Employees_Id:</label>
+                        <input type="text" id="emp_id" name="emp_id" required><br>
+                        <label for="assigned">Assigned:</label>
+                        <input type="text" id="assigned" name="assigned" required><br>
+                        <label for="deadine">Deadine:</label>
+                        <input type="text" id="deadine" name="deadine" required><br>
+                        <label for="completion">Completion:</label>
+                        <input type="text" id="completion" name="completion" required><br>
+                        <label for="superior">Superior:</label>
+                        <input type="text" id="superior" name="superior" required><br>
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded",function(){
+            document.getElementById('logout-button').addEventListener('click',function(event){
+                event.preventDefault();
+                fetch("{% url 'logout' %}",{
+                    method:'POST',
+                    headers:{
+                        'X-CSRFToken':'{{csrf_token}}'
+                    }
+                })
+                .then(response =>{
+                    if(response.ok){
+                        window.location.href="{% url 'login1' %}";
+                    } else {
+                        console.error('Failed to logout');
+                    }
+                })
+                .catch(error =>{
+                    console.error('error','Error!')
+                });
+            });
+        });
+    </script>
+</body>
+</html>

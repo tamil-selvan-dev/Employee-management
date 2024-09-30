@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+        .logic-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: #ffffff;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .logic-container:hover {
+            box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+        .logic-heading {
+            font-size: 28px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .logic-form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .logic-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #555;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .logic-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+        .logic-input:focus {
+            border-color: #6a67ce;
+            background-color: #fff;
+        }
+        .logic-button {
+            width: 100%;
+            padding: 14px 0;
+            background-color: #6a67ce;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .logic-button:hover {
+            background-color: #5a57b2;
+            transform: translateY(-2px);
+        }
+        .logic-paragraph {
+            font-size: 14px;
+            color: #777;
+            margin: 20px 0 0;
+            text-align: center;
+        }
+        .logic-link {
+            color: #6a67ce;
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 10px;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+        .logic-link:hover {
+            color: #5a57b2;
+        }
+        @media (max-width: 600px) {
+            .logic-container {
+                padding: 30px 20px;
+            }
+            .logic-heading {
+                font-size: 24px;
+            }
+            .logic-input, .logic-button {
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logic-container">
+        <h1 class="logic-heading">Login Form</h1>
+        <form id="form">
+            {% csrf_token %}
+            <div class="logic-form-group">
+                <label for="email" class="logic-label">E-mail</label>
+                <input type="text" id="email" name="email" class="logic-input" required>
+            </div>
+            <div class="logic-form-group">
+                <label for="password" class="logic-label">Password</label>
+                <input type="password" id="password" name="password" class="logic-input" required>
+            </div>
+            <button type="submit" class="logic-button">Login</button>
+            <p class="logic-paragraph">or</p>
+            <a href="{% url 'register1' %}" class="logic-link">Register</a>
+        </form>
+    </div>
+    <script>
+        document.getElementById('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const data = {
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+            };
+            
+            fetch("{% url 'login' %}", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('Error!: ' + data.error);
+                } else {
+                    alert('Success');
+                    switch(data.access){
+                        case 'superuser':
+                            window.location.href="{% url 'dashboard' %}";
+                            break;
+                        case 'admin':
+                            window.location.href="{% url 'emp' %}";
+                            break;
+                        case 'user':
+                            window.location.href="{% url 'user2' %}";
+                            break;
+                        default:
+                            alert('Access level not recognised');
+                    }
+                }
+            })
+            .catch(error => {
+                alert('Error!');
+            });
+        });
+    </script>
+</body>
+</html>
