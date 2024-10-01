@@ -1,5 +1,2 @@
-Requirements:
-
-1.Django(pip install django - in command prompt).
-
-2.Rest Frame Work(pip install djangorestframework - in command prompt).
+django
+djangorestframework
