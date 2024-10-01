@@ -71,7 +71,7 @@ You can Create the users in registers But, if you want access the existing data 
   - Email: kavin@gmail.com | Password: kavin
   - Email: sethu@gmail.com | Password: sethu
 ## Output Model
-For the output of the project ypu can visit the **output.docx**, in that file you can see the images of the dashboards
+For the output of the project ypu can visit the **output.pdf**, in that file you can see the images of the dashboards
 ## Django
 - first in the login we can give a email and password for access the dashboards if you want to create a user account you can create on the register.
 - if you want to access the superuser and admin dashboards use the above credentials for that.
